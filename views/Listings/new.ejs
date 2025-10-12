@@ -1,0 +1,46 @@
+<%- layout("layouts/boilerplate") %>
+
+    <div class="col-7 offset-2">  <br>
+        <h3>Add new Listing</h3>
+      
+    <form method="post" action="/Listings" novalidate class="needs-validation">
+        <div class="mb-3">
+            <label for="title" class="form-label">Title</label>
+            <input name="listing[title]" placeholder="Enter Title" type="text" class="form-control" required>
+            <div class="valid-feedback">Looks Good</div>
+            <div class="invalid-feedback">Add valid title</div>
+        </div>
+        <div class="mb-3">
+            <label for="description" class="form-label">Description</label>
+             <input name="listing[description]" placeholder="Enter the description" type="text" class="form-control" required>
+             <div class="invalid-feedback">Please enter short description</div>
+        </div>
+        <div class="mb-3">
+            <label for="image" class="form-label">Image</label>
+             <input name="listing[image]" placeholder="Enter the url of the image" type="text" class="form-control" >
+        </div>
+        <div class="row">
+          <div class="mb-3 col-md-4" >
+            <label for="price" class="form-label">Price</label>
+            <input name="listing[price]" placeholder="Enter price" type="number" class="form-control" required>
+            <div class="invalid-feedback">Please enter valid price</div>
+          </div>
+          <div class="mb-3 col-md-8">
+            <label for="country" class="form-label">Country</label>
+            <input name="listing[country]" placeholder="Enter the Country" type="text" class="form-control" required>
+            <div class="invalid-feedback">Please enter country name</div>
+          </div>
+        
+        </div>
+       
+        <div class="mb-3">
+            <label for="location" class="form-label">Location</label>
+            <input name="listing[location]" placeholder="Enter the Location" type="text" class="form-control" required>
+            <div class="invalid-feedback">Please enter valid location</div>
+        </div>
+        
+         <button class="btn btn-danger">Add</button>
+    </form> 
+    </div>
+   
+
