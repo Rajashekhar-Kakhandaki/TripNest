@@ -4,18 +4,25 @@ const mongoose=require("mongoose");
 const path=require("path");
 const methodOverride=require("method-override");
 const ejsMate=require("ejs-mate");
-const ExpressError=require("./utils/ExpressError.js");
+if(process.env.NODE_ENV !="production"){
+    require("dotenv").config();
+}
+const dbUrl=process.env.ATLASDB_URL
+
+
 
 
 const session=require("express-session");
 const flash=require("connect-flash");
 const passport=require("passport");
 const LocalStrategy=require("passport-local");
-const User=require("./models/user.js");
+const mongoStore=require("connect-mongo");
 
 const listingsRouter=require("./routes/listing.js");
 const reviewsRouter=require("./routes/reviews.js");
 const userRouter=require("./routes/user.js");
+const User=require("./models/user.js");
+const ExpressError=require("./utils/ExpressError.js");
 
 
 app.set("view engine", "ejs");
@@ -25,8 +32,20 @@ app.use(express.static(path.join(__dirname,"public")));
 app.use(methodOverride("_method"));
 app.engine("ejs",ejsMate);
 
+const store=mongoStore.create({
+    mongoUrl:dbUrl,
+    crypto:{
+        secret:process.env.SECRET,
+    },
+    touchAfter:24*3600,
+});
+
+store.on("error",()=>{
+    console.log("Error in Mongo Session store",err)
+});
 const sessionOptions={
-    secret:"mySuperScrete",
+    store,
+    secret:process.env.SECRET,
     resave:false,
     saveUninitialized:true,
     cookie:{
@@ -55,9 +74,10 @@ main()
 .catch((err)=>{
     console.log(err);
 });
+// "mongodb://127.0.0.1:27017/airbnb"
 
 async function  main() {
-    await mongoose.connect("mongodb://127.0.0.1:27017/airbnb");
+    await mongoose.connect(dbUrl);
 };
 
 app.use((req,res,next)=>{
@@ -67,14 +87,6 @@ app.use((req,res,next)=>{
     next();
 });
 
-// app.get("/demoUser",async(req,res)=>{
-//     let newUser=new User({
-//         email:"raj@gmail.com",
-//         username:"Raj"
-//     });
-//    let registedUser=await User.register(newUser,"helloWorld");
-//    res.send(registedUser);
-// })
 
 app.use("/Listings",listingsRouter);
 app.use("/Listings/:id/review",reviewsRouter);
@@ -91,7 +103,7 @@ function handleValidationErr(err){
  }
 
 app.use((err,req,res,next)=>{
-    console.log(err.message);
+    // console.log(err.message);
     if(err.name==="ValidationError"){
         err=handleValidationErr(err);
 

@@ -99,3 +99,12 @@ body{
 .alert-heading{
     word-spacing: .3rem;
 }
+#map {
+    height: 400px;
+     width: 80vh;
+}
+
+.index-img:hover{
+    box-shadow: 2px 2px 10px gray;
+    transform: scale(1.001);
+}

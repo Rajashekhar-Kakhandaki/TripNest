@@ -4,49 +4,22 @@ const User=require("../models/user.js");
 const wrapAsync=require("../utils/wrapAsync.js");
 const passport = require("passport");
 const {saveRedirectUrl}=require("../middleware.js");
+const userController=require("../controllers/users.js");
 
-router.get("/signup",(req,res)=>{
-    res.render("users/signup.ejs");
-});
-router.post("/signup",wrapAsync(async(req,res)=>{
-    try{
-        let {username,email,password}=req.body;
-        const newUser=new User({username,email});
-        let registeredUsr=await  User.register(newUser,password);
-        req.login(registeredUsr,(err)=>{
-            if(err){
-                return next(err);
-            }
-            req.flash("success","Welcome to TripNest");
-            res.redirect("/Listings");
-        });
-        
-    }catch(err){
-        req.flash("error",err.message);
-        res.redirect("/signup");
-    }
-    
-}));
+router
+.route("/signup")
+.get(userController.signUpGetRoute)
+.post(wrapAsync(userController.signUpPostRoute))
 
-router.get("/login",(req,res)=>{
-    res.render("users/login.ejs");
-});
 
-router.post("/login",saveRedirectUrl,passport.authenticate("local",{failureRedirect:"/login",failureFlash:true}),(req,res)=>{
-    req.flash("success","Welcome back to TripNest")
-    let redirectUrl=res.locals.redirectUrl || "/Listings"
-    res.redirect(redirectUrl);
-});
+router
+.route("/login")
+.get(userController.logInGetRoute)
+.post(saveRedirectUrl,passport.authenticate("local",{failureRedirect:"/login",failureFlash:true}),userController.logInPostRoute);
 
-router.get("/logout",(req,res,next)=>{
-    req.logout((err)=>{
-        if(err){
-            return next(err);
-        }
-        req.flash("success","You are logged out!");
-        res.redirect("/Listings");
-    });
-});
+
+
+router.get("/logout",userController.logOutRoute);
 
 
 module.exports=router;
