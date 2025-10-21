@@ -1,6 +1,7 @@
 const express=require("express");
 const app=express();
 const mongoose=require("mongoose");
+const Listing=require("./models/listing.js");
 const path=require("path");
 const methodOverride=require("method-override");
 const ejsMate=require("ejs-mate");
@@ -87,7 +88,11 @@ app.use((req,res,next)=>{
     next();
 });
 
+app.get("/",async(req,res)=>{
+   const AllListings = await Listing.find({});
+    res.render("Listings/index.ejs", { AllListings });
 
+});
 app.use("/Listings",listingsRouter);
 app.use("/Listings/:id/review",reviewsRouter);
 app.use("/",userRouter);
