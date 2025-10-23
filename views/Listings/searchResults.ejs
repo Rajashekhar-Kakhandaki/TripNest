@@ -1,0 +1,41 @@
+<% layout("layouts/boilerplate") %>
+    <h3 class="search-title">Results for "<%=query%>"</h3>
+    <div class="row row-cols-lg-3 row-cols-md-2 row-cols-sm-1 ">
+
+        <%if(results.length===0){%>
+            <div class="container text-center mt-5">
+                <div class="card shadow-sm border-0 p-5 mx-auto" style="max-width: 600px; border-radius: 20px;">
+                    <div class="card-body">
+                        <img src="/images/empty-search.svg" alt="No results" class="mb-4"
+                            style="width:150px; opacity:0.9;">
+                        <h3 class="fw-bold text-danger">No places found 😔</h3>
+                        <p class="text-muted mb-4">Try searching for another title, country, or location.</p>
+                        <a href="/Listings" class="btn btn-primary px-4 py-2 rounded-pill">
+                            <i class="bi bi-arrow-left-circle me-2"></i> Back to Listings
+                        </a>
+                    </div>
+                </div>
+            </div>
+
+            <% }else{%>
+                <% for(let List of results){%>
+                    <a href="/Listings/<%=List._id%>">
+                        <div class="card listing-card search-img">
+                            <img src="<%=List.image.url%>" class="card-img-top home-img" alt="Listings images"
+                                style="height: 20rem;">
+                            <div class="card-img-overlay">TripNest Limited</div>
+                            <div class="card-body">
+                                <p class="card-text">
+                                    <b>
+                                        <%=List.title%><br>
+                                    </b>
+                                    &#8377;<%= List.price?.toLocaleString("en-IN") || "" %>/night <i
+                                            class="tax-info">&nbsp; +18% GST</i>
+
+                                </p>
+                            </div>
+                        </div>
+                    </a>
+                    <% }%>
+                        <%}%>
+    </div>

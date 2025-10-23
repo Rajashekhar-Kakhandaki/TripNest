@@ -81,3 +81,27 @@ module.exports.destroyListingRoute=async (req, res) => {
     req.flash("success", "Listing Deleted!");
     res.redirect("/Listings");
 };
+
+module.exports.searchListingRoute=async(req,res)=>{
+  const query = req.query.q;
+  if (!query) {
+    return res.redirect('/listings');
+  }
+
+  const results = await Listing.find({
+    $or: [
+      { title: { $regex: query, $options: "i" } },
+      { country: { $regex: query, $options: "i" } },
+      { location: { $regex: query, $options: "i" } }
+    ]
+  });
+
+   res.render("Listings/searchResults", { results, query });
+};
+
+module.exports.filterRoute=async (req, res) => {
+  const { category } = req.params;
+  const cleanCategory = category.trim();
+  const results = await Listing.find({ category:cleanCategory});
+  res.render("Listings/searchResults", {results,query:category });
+}

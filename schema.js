@@ -1,5 +1,4 @@
-
-const Joi=require('joi');
+const Joi = require('joi');
 
 module.exports.listingSchema = Joi.object({
   listing: Joi.object({
@@ -12,6 +11,27 @@ module.exports.listingSchema = Joi.object({
     price: Joi.number().required().min(0),
     location: Joi.string().required(),
     country: Joi.string().required(),
+
+    // ✅ Add category validation here
+    category: Joi.string()
+      .valid(
+        "Trending",
+        "Room",
+        "IconicCities",
+        "Mountain",
+        "Castles",
+        "AmazingPools",
+        "Camping",
+        "Farms",
+        "Arctic",
+        "Domes",
+        "Boats"
+      )
+      .required()
+      .messages({
+        "any.only": "Invalid category selected",
+        "any.required": "Category is required",
+      }),
 
     geometry: Joi.object({
       type: Joi.string()
@@ -33,12 +53,4 @@ module.exports.listingSchema = Joi.object({
         }),
     }).optional()
   }).required()
-});
-
-
-module.exports.reviewSchema=Joi.object({
-    review:Joi.object({
-        rating:Joi.number().required().min(1).max(5),
-        comment:Joi.string().required()
-    }).required()
 });

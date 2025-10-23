@@ -16,7 +16,7 @@ router
 
 //new route
 router.get("/new", isLoggedIn, listingController.newListingRoute);
-
+router.get("/search",listingController.searchListingRoute);
 //show Route
 //edit put Route
 //destroy Route
@@ -26,6 +26,7 @@ router
 .put( isLoggedIn,isOwner,upload.single("listing[image]"), validateListing, wrapAsync(listingController.editListingPutRoute))
 .delete( isLoggedIn, isOwner, wrapAsync(listingController.destroyListingRoute));
 
+router.get("/category/:category",listingController.filterRoute);
 
 
 //edit route

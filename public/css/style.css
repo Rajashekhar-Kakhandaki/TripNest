@@ -108,3 +108,9 @@ body{
     box-shadow: 2px 2px 10px gray;
     transform: scale(1.001);
 }
+.search-img{
+    margin-top: 1rem;
+}
+.search-title{
+    margin-top: 1rem;
+}
