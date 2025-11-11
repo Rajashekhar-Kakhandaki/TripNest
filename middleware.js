@@ -53,6 +53,7 @@ module.exports.validateListing = (req, res, next) => {
 };
 
 module.exports.validateReview=(req,res,next)=>{
+    console.log(req.body);
     let {error}=reviewSchema.validate(req.body,{abortEarly:false});
     if(error){
         let errMsg=error.details.map((el)=>el.message).join(",");

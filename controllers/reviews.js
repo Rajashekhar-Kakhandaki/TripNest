@@ -3,7 +3,6 @@ const Review=require("../models/review.js");
 
 module.exports.reviewPostRoute=async(req,res)=>{
  let listing=await Listing.findById(req.params.id).populate({path: "reviews",populate: { path: "author"}});
-
  let newreview=new Review(req.body.review);
  newreview.author=req.user._id;
  listing.reviews.push(newreview);

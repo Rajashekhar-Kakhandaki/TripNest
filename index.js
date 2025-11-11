@@ -110,7 +110,7 @@ function handleValidationErr(err){
  }
 
 app.use((err,req,res,next)=>{
-    // console.log(err.message);
+     console.log(err.message);
     if(err.name==="ValidationError"){
         err=handleValidationErr(err);
 
