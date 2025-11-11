@@ -17,10 +17,10 @@ module.exports.listingSchema = Joi.object({
       .valid(
         "Trending",
         "Room",
-        "IconicCities",
+        "Iconic Cities",
         "Mountain",
         "Castles",
-        "AmazingPools",
+        "Amazing Pools",
         "Camping",
         "Farms",
         "Arctic",
